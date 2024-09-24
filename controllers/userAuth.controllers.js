@@ -43,7 +43,7 @@ async function handlePostUserSignup(req, res){
             password,
         });
 
-        res.status(200).json({user});
+        res.status(200).redirect("/");
     } 
     catch(err){
         const errors = handleError(err);

@@ -10,9 +10,49 @@
     <%- include("partials/nav.ejs") %>
 
     <!-- signup form -->
-     <h1>signup</h1>
+    <div class="container mt-4"> 
+    <form method="post" action="/user/signup">
+
+        <div class="mb-3">
+          <label class="form-label">Name</label>
+          <input type="text" class="form-control" name="name">
+        </div>
+
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Email address</label>
+          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email">
+          <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+          <div class="email error"></div>
+        </div>
+
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Password</label>
+          <input type="password" class="form-control" id="exampleInputPassword1" name="password">
+          <div class="password error"></div>
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
 
 
 </body>
+
+<script>
+    const form = document.querySelector("form");
+
+    form.addEventListener("submit", (e)=> {
+        e.preventDefault();
+
+        // ger values:
+        const email = form.email.value;
+        const password = form.passowr.value;
+        console.log(email, password);
+    })
+
+
+</script>
+
 <%- include("partials/script.ejs") %>
 </html>
