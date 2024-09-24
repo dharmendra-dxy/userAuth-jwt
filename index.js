@@ -20,12 +20,13 @@ connectDatabase("mongodb://localhost:27017/userAuth-jwt");
 // middlewares:
 app.use(express.static("public"));
 app.use(express.json());
+app.use(express.urlencoded({extended: false}));
 
 
 // routes:
-app.use("/user",userRoutes);
 app.get("/", (req,res) => res.render("home"));
 app.get("/blogs", (req,res) => res.render("blogs"));
+app.use("/user",userRoutes);
 
 
 
