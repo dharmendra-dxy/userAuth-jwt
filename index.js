@@ -3,6 +3,8 @@ const path = require("path");
 
 const {connectDatabase} = require("./connection");
 
+const userRoutes = require("./routes/userAuth.routes");
+
 const app = express();
 const PORT = 8000;
 
@@ -17,11 +19,14 @@ connectDatabase("mongodb://localhost:27017/userAuth-jwt");
 
 // middlewares:
 app.use(express.static("public"));
+app.use(express.json());
 
 
 // routes:
+app.use("/user",userRoutes);
 app.get("/", (req,res) => res.render("home"));
 app.get("/blogs", (req,res) => res.render("blogs"));
+
 
 
 app.listen(PORT , ()=> console.log(`Server is running at http://localhost:${PORT}`));
