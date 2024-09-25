@@ -1,9 +1,11 @@
 const jwt = require("jsonwebtoken");
 
 // createToken:
-function createToken(id){
+function createToken(user){
     const payload = {
-        id,
+        id: user._id,
+        name: user.name,
+        email: user.email,
     };
 
     return jwt.sign(payload, "secret-key");

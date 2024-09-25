@@ -63,7 +63,7 @@ async function handlePostUserSignup(req, res){
             password,
         });
         // createToken and cookie when user is created:
-        const token = createToken(user._id);
+        const token = createToken(user);
         res.cookie("jwt", token);
 
         res.status(200).redirect("/");
@@ -84,7 +84,7 @@ async function handlePostUserLogin(req, res){
         const user = await User.loginUser(email, password);
 
         // createToken and cookie when user is found:
-        const token = createToken(user._id);
+        const token = createToken(user);
         res.cookie("jwt", token);
 
         res.status(200).redirect("/");

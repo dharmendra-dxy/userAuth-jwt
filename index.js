@@ -4,7 +4,7 @@ const cookieParser = require("cookie-parser");
 const path = require("path");
 
 const {connectDatabase} = require("./connection");
-const {requireAuthentication} = require("./middleware/auth.middleware");
+const {requireAuthentication, checkCurrentUser} = require("./middleware/auth.middleware");
 
 const userRoutes = require("./routes/userAuth.routes");
 
@@ -26,6 +26,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
 app.use(cookieParser());
+app.use(checkCurrentUser);
 
 
 // routes:
