@@ -1,10 +1,21 @@
 const User = require("../models/user.model");
-const jwt = require("jsonwebtoken");
+
+const {createToken} = require("../services/auth.services");
 
 // handle Errors:
 function handleError(err){
     console.log(err.message, err.code);
     let error = {email : "", password: ""};
+
+    // incorrect email:
+    if(err.message === "Incorrect email"){
+        error.email = "Email is not registed";
+    }
+
+    // incorrect password:
+    if(err.message === "Incorrect password"){
+        error.password = "Password is incorrect";
+    }
 
     // duplicate error code:
     if(err.code===11000){
@@ -22,27 +33,20 @@ function handleError(err){
     return error;
 }
 
-// createToken:
-function createToken(id){
-    const payload = {
-        id,
-    };
 
-    return jwt.sign(payload, "secret-key");
-}
 
-// handleUserSignup:
+// [GET] handleUserSignup:
 function handleGetUserSignup(req, res){
     return res.render("signup");
 }
 
-// handleGetUserLogin:
+// [GET] handleGetUserLogin:
 function handleGetUserLogin(req, res){
     return res.render("login");
 }
 
 
-// handlePostUserSignup:
+// [POST] handlePostUserSignup:
 async function handlePostUserSignup(req, res){
     const {name, email, password} = req.body;
 
@@ -56,7 +60,7 @@ async function handlePostUserSignup(req, res){
         const token = createToken(user._id);
         res.cookie("jwt", token);
 
-        res.status(200).redirect("/", { user});
+        res.status(200).redirect("/");
     } 
     catch(err){
         const errors = handleError(err);
@@ -66,16 +70,22 @@ async function handlePostUserSignup(req, res){
 }
 
 
-// handlePostUserLogin:
+// [POST] handlePostUserLogin:
 async function handlePostUserLogin(req, res){
     const {email, password} = req.body;
 
     try{
         const user = await User.loginUser(email, password);
-        res.status(200).json({user});
+
+        // createToken and cookie when user is found:
+        const token = createToken(user._id);
+        res.cookie("jwt", token);
+
+        res.status(200).redirect("/");
     }
     catch(err){
-        res.status(400).send("error fault user login");
+        const errors = handleError(err);
+        res.status(400).json({errors});
     }
 
 }

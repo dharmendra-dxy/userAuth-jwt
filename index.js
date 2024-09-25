@@ -1,8 +1,10 @@
 const express = require("express");
-const path = require("path");
 const cookieParser = require("cookie-parser");
 
+const path = require("path");
+
 const {connectDatabase} = require("./connection");
+const {requireAuthentication} = require("./middleware/auth.middleware");
 
 const userRoutes = require("./routes/userAuth.routes");
 
@@ -28,7 +30,7 @@ app.use(cookieParser());
 
 // routes:
 app.get("/", (req,res) => res.render("home"));
-app.get("/blogs", (req,res) => res.render("blogs"));
+app.get("/blogs", requireAuthentication, (req,res) => res.render("blogs"));
 app.use("/user",userRoutes);
 
 
