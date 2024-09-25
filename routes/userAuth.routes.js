@@ -6,6 +6,7 @@ const {
     handlePostUserSignup,
     handleGetUserLogin,
     handlePostUserLogin,
+    handleGetUserLogout
 } = require("../controllers/userAuth.controllers");
 
 
@@ -15,8 +16,10 @@ const {
 
 router.get("/signup", handleGetUserSignup);
 router.get("/login", handleGetUserLogin);
+router.get("/logout", handleGetUserLogout);
 router.post("/signup", handlePostUserSignup);
 router.post("/login", handlePostUserLogin);
+
 
 
 module.exports = router;

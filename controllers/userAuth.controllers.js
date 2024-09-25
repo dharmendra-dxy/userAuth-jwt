@@ -45,6 +45,12 @@ function handleGetUserLogin(req, res){
     return res.render("login");
 }
 
+// [GET] handleGetUserLogout:
+function handleGetUserLogout(req,res){
+    res.cookie("jwt", "", {maxAge: 1});
+    res.redirect("/");
+}
+
 
 // [POST] handlePostUserSignup:
 async function handlePostUserSignup(req, res){
@@ -96,4 +102,5 @@ module.exports = {
     handlePostUserSignup,
     handleGetUserLogin,
     handlePostUserLogin,
+    handleGetUserLogout,
 }
