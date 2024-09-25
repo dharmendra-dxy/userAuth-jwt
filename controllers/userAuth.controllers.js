@@ -1,4 +1,5 @@
 const User = require("../models/user.model");
+const jwt = require("jsonwebtoken");
 
 // handle Errors:
 function handleError(err){
@@ -19,6 +20,15 @@ function handleError(err){
         });
     }
     return error;
+}
+
+// createToken:
+function createToken(id){
+    const payload = {
+        id,
+    };
+
+    return jwt.sign(payload, "secret-key");
 }
 
 // handleUserSignup:
@@ -42,8 +52,11 @@ async function handlePostUserSignup(req, res){
             email,
             password,
         });
+        // createToken and cookie when user is created:
+        const token = createToken(user._id);
+        res.cookie("jwt", token);
 
-        res.status(200).redirect("/");
+        res.status(200).redirect("/", { user});
     } 
     catch(err){
         const errors = handleError(err);
@@ -55,14 +68,14 @@ async function handlePostUserSignup(req, res){
 
 // handlePostUserLogin:
 async function handlePostUserLogin(req, res){
-    const {name, email, password} = req.body;
+    const {email, password} = req.body;
 
     try{
-        const user = await User.find({email});
-
+        const user = await User.loginUser(email, password);
+        res.status(200).json({user});
     }
-    catch(error){
-
+    catch(err){
+        res.status(400).send("error fault user login");
     }
 
 }
